@@ -7,6 +7,7 @@ Layer [] layermas;
 double [] inputdata;
 MatrixWeight matrixweight1;
 MatrixWeight matrixweight2;
+Logic log = new Logic();
     Web(double [] mas, int layer, int [] neironcount, MatrixWeight matrixweight1, MatrixWeight matrixweight2){
         inputdata = mas;
         layermas  =new Layer[layer];
@@ -27,10 +28,19 @@ MatrixWeight matrixweight2;
       
 }
      public void start () { 
-    Logic log = new Logic();
+   // перенёс создание объекта вверх 
     log.start(layermas,inputdata,matrixweight1,matrixweight2);
  } 
   public void education (){
       
-  }   
+  } 
+  
+  public void savematrix(MatrixWeight matrixweight) {
+    log.savematrix(matrixweight);
+}
+  public void savematrix (MatrixWeight matrix1, MatrixWeight matrix2) {
+     log.savematrix(matrix1,matrix2); 
+  }
+
+  
 }

@@ -1,11 +1,31 @@
 
 package neironweb;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static neironweb.MatrixWeight.path;
+
 
 public class Logic {
-
+MatrixWeight matrixweight1;
+MatrixWeight matrixweight2;
+Layer [] layermas;
+double [] inputdata;
+FileWriter out;
+FileReader fr;
+BufferedReader br;
+String temp;
+String s;
    public  void start(Layer [] layermas, double [] inputdata,MatrixWeight matrixweight1, MatrixWeight matrixweight2){
-       
+       this.matrixweight1 = matrixweight1;
+       this.matrixweight2 = matrixweight2;
+       this.layermas = layermas;
+       this.inputdata = inputdata;
        MatrixWeight [] matrixWeightArray = {matrixweight1, matrixweight2};
        
        for (int i = 0; i < layermas.length; i++) {
@@ -26,4 +46,13 @@ public class Logic {
     for(double a:inputdata)
         System.out.println(a);
    }
+   
+  public void savematrix(MatrixWeight matrixweight) {
+    matrixweight.saveMatrix(matrixweight.mastostring());
 }
+    public void savematrix(MatrixWeight matrix1, MatrixWeight matrix2 ) {
+    matrixweight1.saveMatrix(matrix1.mastostring() + "---2 \n" + matrix2.mastostring() );
+}
+   }
+   
+   

@@ -20,7 +20,12 @@ public class NeironWeb {
    MatrixWeight matrixweight2 = new MatrixWeight(neironinlayer[0],neironinlayer[1]);
    Web w = new Web(data, 2,neironinlayer,matrixweight1,matrixweight2);
    w.start();
-   
+    matrixweight1.readMatrix();
+    System.out.println("----------------------- " + matrixweight1.stringmas);
+    System.out.println("----------------------- " + matrixweight2.stringmas);
+   // w.savematrix(matrixweight1);
+   // w.savematrix(matrixweight2);
+    w.savematrix(matrixweight1,matrixweight2);
 //   for()
 //      w.education(data[], result[]);
         
