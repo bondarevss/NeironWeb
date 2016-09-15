@@ -21,11 +21,13 @@ FileReader fr;
 BufferedReader br;
 String temp;
 String s;
-   public  void start(Layer [] layermas, double [] inputdata,MatrixWeight matrixweight1, MatrixWeight matrixweight2){
+
+   public  double [] start(Layer [] layermas, double [] inputdata,MatrixWeight matrixweight1, MatrixWeight matrixweight2){
        this.matrixweight1 = matrixweight1;
        this.matrixweight2 = matrixweight2;
        this.layermas = layermas;
        this.inputdata = inputdata;
+       
        MatrixWeight [] matrixWeightArray = {matrixweight1, matrixweight2};
        
        for (int i = 0; i < layermas.length; i++) {
@@ -35,16 +37,18 @@ String s;
              
              templ[j] = layer.l[j].calculation(inputdata,matrixWeightArray[i],j);
              
-             
             // System.out.println("layer " + i + " "+ " Neoron " + j + " " +layer.l[j].calculation(inputdata));
            }
-           for( double d : templ)
-               System.out.println("output " + d);
+           layer.layeroutput = templ;
+           
+           //for( double d : templ)
+             //  System.out.println("output " + d);
            
            inputdata = templ;
        }
-    for(double a:inputdata)
-        System.out.println(a);
+    //for(double a:inputdata)
+      //  System.out.println(a);
+    return inputdata;
    }
    
   public void savematrix(MatrixWeight matrixweight) {

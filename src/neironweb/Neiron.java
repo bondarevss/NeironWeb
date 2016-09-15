@@ -15,7 +15,7 @@ public double calculation(double [] mas, MatrixWeight matrixWeight,int a){
     for (int i = 0; i < mas.length; i++) {
        // System.out.println("val " + matrixWeight.weight[i][a]);
        result += mas[i] * matrixWeight.weight[i][a]; 
-       System.out.println("result " + result + " " + mas[i] + " "+ matrixWeight.weight[i][a]);
+       //System.out.println("result " + result + " " + mas[i] + " "+ matrixWeight.weight[i][a]);
        
     }
    // System.out.println("result " + result);
