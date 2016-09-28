@@ -24,7 +24,7 @@ public class MatrixWeight {
     int data;
     int neironinlayer;
     public String stringmas = "";
-static String path = "D:\\neiron\\MatrixWeight.txt";
+static String path = "C:\\Users\\BS\\Desktop\\MatrixWeight.txt";
 
     public MatrixWeight(int data, int neironinlayer) {
         this.data=data;

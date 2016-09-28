@@ -21,6 +21,8 @@ public class NeironWeb {
    MatrixWeight matrixweight1 = new MatrixWeight(data.length,neironinlayer[0]);
    MatrixWeight matrixweight2 = new MatrixWeight(neironinlayer[0],neironinlayer[1]);
    
+   
+   
    Web w = new Web(data, 2,neironinlayer,matrixweight1,matrixweight2);
 
     //работа сети
@@ -41,7 +43,9 @@ public class NeironWeb {
 //      w.education(data[], result[]);
         
     
-    
+    MailReader mail = new MailReader();
+   mail.GetMail();
+   
     
     }
     
