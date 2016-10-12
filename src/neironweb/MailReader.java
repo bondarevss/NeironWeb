@@ -1,10 +1,15 @@
 
 package neironweb;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static neironweb.MatrixWeight.path;
 //import javax.mail.*;
 //import javax.mail.internet.MimeMultipart;
 
@@ -18,6 +23,12 @@ String toEmail  = "bondarev_bs@mail.ru";
 Properties props = new Properties();
  //   Map<String, int> map = new Map<String, int>;
 HashMap<String, Integer> hmap = new HashMap<String, Integer>();
+static String path = "C:\\Users\\BS\\Desktop\\";
+FileWriter out;
+FileReader fr;
+BufferedReader br;
+
+
 /*
 public void GetMail(){
     try {
@@ -188,7 +199,54 @@ int countV=0;
     System.out.println("countV = " + countV);
     System.out.println("weightV = " + weightV);
 }
+//сохраняем в файл с указанным названием 
+public void saveInformation(String stp, String filename){
+   // String stp = ((Integer)(x + ' ' + y)).toString();
+   // filename = "countWordandV.txt";
+    path = path + filename+".txt";
+    try {
+        out = new FileWriter(path);
+        out.write(stp);
+        out.close();
+    } catch (IOException ex) {
+        Logger.getLogger(MailReader.class.getName()).log(Level.SEVERE, null, ex);
+    }
+}
 
+//читает информацию с файла с указанным названием 
+ public String readInformation(String filename){
+    String temp = ""; 
+    String s;
+    path = path + filename+".txt";
+    try {
+        fr = new FileReader(path);
+         br = new BufferedReader(fr); 
+         temp = br.readLine();
+            while ( (s = br.readLine()) !=null){
+               temp = temp + s + '\n'; 
+            }
+        System.out.println("Прочитали : " + temp); 
+        
+    } catch (FileNotFoundException ex) {
+        Logger.getLogger(MatrixWeight.class.getName()).log(Level.SEVERE, null, ex);
+    } catch (IOException ex) {
+        Logger.getLogger(MailReader.class.getName()).log(Level.SEVERE, null, ex);
+    }
+     return temp;
+    }
 
+ // Переводит массив в строку с переводом карретки 
+ public String massToStringLn(String [] mas){
+    String masString = ""; 
+     for (int i = 0; i < mas.length; i++) {
+       masString=masString+mas[i]+'\n'; 
+     }
+     return masString;
+ }
 
+ //Переводит строку в масив. Бьёт по '\n'
+ public String [] StringToMasKaretka(String str){
+  String [] StringMas = str.split("\n");
+  return StringMas;
+ }
 }
