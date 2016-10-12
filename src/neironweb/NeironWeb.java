@@ -10,8 +10,8 @@ public class NeironWeb {
     public static void main(String[] args) {
         
         MailReader mail = new MailReader();
-   //mail.GetMail();
-   mail.analizator(null);   
+   mail.GetMail();
+   //mail.analizator(null);   
         
 //        double [] data = {0.1,0.7,0.3,0.9};
 //        double [] result = {0.1,0.9};

@@ -10,38 +10,40 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static neironweb.MatrixWeight.path;
-//import javax.mail.*;
-//import javax.mail.internet.MimeMultipart;
+import javax.mail.*;
+import javax.mail.internet.MimeMultipart;
 
 
 public class MailReader {
 String to = "";
 String from = "";
 String username = "bondarev_bs";
-String password = "westbam1411!";
-String toEmail  = "bondarev_bs@mail.ru";
+String password = "//";
+String toEmail  = "smolyakav@mail.ru";
 Properties props = new Properties();
  //   Map<String, int> map = new Map<String, int>;
 HashMap<String, Integer> hmap = new HashMap<String, Integer>();
-static String path = "C:\\Users\\BS\\Desktop\\";
+//static String path = "C:\\Users\\BS\\Desktop\\";
+static String path = "\\resources";
 FileWriter out;
 FileReader fr;
 BufferedReader br;
 
 
-/*
+
 public void GetMail(){
     try {
         props.setProperty("mail.store.protocol", "imaps");
         Session session = Session.getInstance(props,null);
         Store store = session.getStore();
         store.connect("imap.mail.ru", toEmail, password);
-        Folder inbox = store.getFolder("INBOX");
+        Folder inbox = store.getFolder("SpamForExperiments");
         inbox.open(Folder.READ_ONLY);
         Message [] msg = inbox.getMessages();
         System.out.println("Мы получили" + msg.length);
         for (int i = 0; i < 10; i++) {
          System.out.println("Дата: " + msg[i].getReceivedDate() + "Тема: " +msg[i].getSubject() + "Сообщение: " + getTextFromMessage(msg[i]));   
+            analizator(msg[i].getSubject(),getTextFromMessage(msg[i]));
         }
         
     } catch (NoSuchProviderException ex) {
@@ -53,6 +55,7 @@ public void GetMail(){
     } catch (Exception ex) {
         Logger.getLogger(MailReader.class.getName()).log(Level.SEVERE, null, ex);
     }
+    
 }
 
 private static String getTextFromMessage(Message message) throws Exception {
@@ -63,6 +66,9 @@ result = message.getContent().toString();
 } else if (message.isMimeType("multipart/*")) {
 MimeMultipart mimeMultipart = (MimeMultipart) message.getContent();
 result = getTextFromMimeMultipart(mimeMultipart);
+}
+else if (message.isMimeType("text/html")) {
+result = message.getContent().toString();
 }
 return result;
 }
@@ -76,17 +82,19 @@ BodyPart bodyPart = mimeMultipart.getBodyPart(i);
 if (bodyPart.isMimeType("text/plain")) {
 result = result + "\n" + bodyPart.getContent();
 break; // without break same text appears twice in my tests
-} else if (bodyPart.isMimeType("text/html")) {
+} 
+else if (bodyPart.isMimeType("text/html")) {
 String html = (String) bodyPart.getContent();
-result = result + "\n" + org.jsoup.Jsoup.parse(html).text();
-} else if (bodyPart.getContent() instanceof MimeMultipart){
+result = result + "\n" + html; //org.jsoup.Jsoup.parse(html).text();
+} 
+else if (bodyPart.getContent() instanceof MimeMultipart){
 result = result + getTextFromMimeMultipart((MimeMultipart)bodyPart.getContent());
 }
 }
 return result;
 }
-*/
-public static void analizator (String text){
+
+public static void analizator (String topic,String text){
     double weightWord=0;
     double weightV = 0;
  String [] maswords = {"бизнес", 
@@ -157,13 +165,13 @@ public static void analizator (String text){
 "бизнес на дому",
 "фриланс"
  };
- text = "Возможности есть, свой бизнес создать хочется, не хватает опыта и идей свежих?"
-         + "Возможности есть, свой бизнес создать хочется, не можете найти своё?"
-         + "Деньги есть, свой бизнес создать хочется, не хватает смелости и опыта?"
-         + "Возможности есть, свой бизнес создать хочется, не можете найти своё?"
-         + "Свой бизнес открыть хочется, возможности имеются, не хватает опыта "
-         + "и идей свежих?Возможности есть, свой бизнес на дому создать хочется, не хватает опыта и идей свежих?" ;  
-text = text.replaceAll("[ ]+", " ");
+// text = "Возможности есть, свой бизнес создать хочется, не хватает опыта и идей свежих?"
+//         + "Возможности есть, свой бизнес создать хочется, не можете найти своё?"
+//         + "Деньги есть, свой бизнес создать хочется, не хватает смелости и опыта?"
+//         + "Возможности есть, свой бизнес создать хочется, не можете найти своё?"
+//         + "Свой бизнес открыть хочется, возможности имеются, не хватает опыта "
+//         + "и идей свежих?Возможности есть, свой бизнес на дому создать хочется, не хватает опыта и идей свежих?" ;  
+ text = text.replaceAll("[ ]+", " ");
  String text2 = text.replaceAll("[^а-яА-Я]", " ");
 text2 = text2.replaceAll("[ ]+", " ");
  String [] masString = text2.split(" ");
@@ -179,9 +187,11 @@ int countwd = 0;
                 countwd++;
         }
     }
-    weightWord=countwd/(double)masString.length;
-    System.out.println(weightWord);
-    System.out.println(countwd + " " + masString.length);
+    
+    weightWord = masString.length!=0?countwd/(double)masString.length:0;
+    weightWord = 1/(1+Math.pow(Math.E,-weightWord));
+    //System.out.println(weightWord);
+    //System.out.println(countwd + " " + masString.length);
 
 ///// Кол-во словосочетаний
 int countV=0;
@@ -195,10 +205,16 @@ int countV=0;
            }
         }
     }
-    weightV=countV/(((double)masString.length)/2);
-    System.out.println("countV = " + countV);
-    System.out.println("weightV = " + weightV);
+    weightV=masString.length!=0?countV/(((double)masString.length)/2):0;
+    weightV = 1/(1+Math.pow(Math.E,-weightV));
+    System.out.println("countwd = " + weightWord);
+    System.out.println("countV = " + weightV);
+    System.out.println("Link = " + foundlink(text));
+    System.out.println("Topic = "+ analizTopic(topic));
 }
+
+
+
 //сохраняем в файл с указанным названием 
 public void saveInformation(String stp, String filename){
    // String stp = ((Integer)(x + ' ' + y)).toString();
@@ -249,4 +265,15 @@ public void saveInformation(String stp, String filename){
   String [] StringMas = str.split("\n");
   return StringMas;
  }
+ 
+ public static double foundlink(String message){
+  if(message.indexOf("href")!=-1) return 1.0;
+  else return 0.0;
+ }
+ 
+public static double analizTopic(String message){
+ if (message!=null) 
+        return message.length()/100.0;
+ else return 0.0;
+}
 }
