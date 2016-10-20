@@ -18,16 +18,18 @@ public class MailReader {
 String to = "";
 String from = "";
 String username = "bondarev_bs";
-String password = "//";
+String password = "..";
 String toEmail  = "smolyakav@mail.ru";
 Properties props = new Properties();
  //   Map<String, int> map = new Map<String, int>;
 HashMap<String, Integer> hmap = new HashMap<String, Integer>();
 //static String path = "C:\\Users\\BS\\Desktop\\";
-static String path = "\\resources";
+static String path = "D:\\111\\NeironWeb\\resources\\";
 FileWriter out;
 FileReader fr;
 BufferedReader br;
+static StringBuilder resultText = new StringBuilder();
+
 
 
 
@@ -41,11 +43,11 @@ public void GetMail(){
         inbox.open(Folder.READ_ONLY);
         Message [] msg = inbox.getMessages();
         System.out.println("Мы получили" + msg.length);
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < msg.length ; i++) {
          System.out.println("Дата: " + msg[i].getReceivedDate() + "Тема: " +msg[i].getSubject() + "Сообщение: " + getTextFromMessage(msg[i]));   
             analizator(msg[i].getSubject(),getTextFromMessage(msg[i]));
         }
-        
+        saveInformation(resultText.toString(), "parameters"); 
     } catch (NoSuchProviderException ex) {
         Logger.getLogger(MailReader.class.getName()).log(Level.SEVERE, null, ex);
     } catch (MessagingException ex) {
@@ -97,6 +99,7 @@ return result;
 public static void analizator (String topic,String text){
     double weightWord=0;
     double weightV = 0;
+    
  String [] maswords = {"бизнес", 
 "деньги", 
 "скидка",
@@ -189,7 +192,7 @@ int countwd = 0;
     }
     
     weightWord = masString.length!=0?countwd/(double)masString.length:0;
-    weightWord = 1/(1+Math.pow(Math.E,-weightWord));
+    weightWord =  Math.abs((1+Math.pow(Math.E, - 3 * weightWord)) - 0.5); 
     //System.out.println(weightWord);
     //System.out.println(countwd + " " + masString.length);
 
@@ -211,6 +214,7 @@ int countV=0;
     System.out.println("countV = " + weightV);
     System.out.println("Link = " + foundlink(text));
     System.out.println("Topic = "+ analizTopic(topic));
+    resultText.append(weightWord + "|" +weightV + "|" +foundlink(text)+ "|" +analizTopic(topic)+ "|"+"0"+"\n");
 }
 
 

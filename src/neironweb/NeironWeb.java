@@ -2,6 +2,7 @@
 package neironweb;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class NeironWeb {
@@ -11,28 +12,44 @@ public class NeironWeb {
         
         MailReader mail = new MailReader();
    mail.GetMail();
+   String s = mail.readInformation("parameters");
+   String smas[] = mail.StringToMasKaretka(s);
+   
    //mail.analizator(null);   
         
-//        double [] data = {0.1,0.7,0.3,0.9};
+         double [] data = {0.1,0.7,0.3,0.9};
 //        double [] result = {0.1,0.9};
 //        
-//        int [] neironinlayer = {3,2};
+        int [] neironinlayer = {3,2};
 //   
 //   
 //        
-//   MatrixWeight matrixweight1 = new MatrixWeight(data.length,neironinlayer[0]);
-//   MatrixWeight matrixweight2 = new MatrixWeight(neironinlayer[0],neironinlayer[1]);
-//   
-//   
-//   
-//   Web w = new Web(data, 2,neironinlayer,matrixweight1,matrixweight2);
-
+   MatrixWeight matrixweight1 = new MatrixWeight(4,neironinlayer[0]);
+   MatrixWeight matrixweight2 = new MatrixWeight(neironinlayer[0],neironinlayer[1]);
+   
+   
+   
+   Web w = new Web(data, 2, neironinlayer,matrixweight1,matrixweight2);
+    
+        for (int i = 0; i < smas.length; i++) {
+         
+            double [] masmas = {};
+            String [] masSt = smas[i].split("|");
+            for(int j = 0; j < 5; j++)
+                   masmas[j] =  Double.parseDouble(masSt[j]) ;
+         
+         double []first = Arrays.copyOfRange(masmas, 0, 3);
+         double []second = Arrays.copyOfRange(masmas, 4, 4);
+         
+         w.education(first, second);   
+        }
+   
     //работа сети
     //   w.start(); 
    
    
    //обучение сети
- //  w.education(data, result);
+   
    
    
     //matrixweight1.readMatrix();
