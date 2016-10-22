@@ -18,17 +18,18 @@ public class MailReader {
 String to = "";
 String from = "";
 String username = "bondarev_bs";
-String password = "..";
-String toEmail  = "smolyakav@mail.ru";
+
+String password = " ";
+String toEmail  = "@mail.ru";
 Properties props = new Properties();
  //   Map<String, int> map = new Map<String, int>;
 HashMap<String, Integer> hmap = new HashMap<String, Integer>();
 //static String path = "C:\\Users\\BS\\Desktop\\";
-static String path = "D:\\111\\NeironWeb\\resources\\";
+String path = "resources//";
 FileWriter out;
 FileReader fr;
 BufferedReader br;
-static StringBuilder resultText = new StringBuilder();
+StringBuilder resultText = new StringBuilder();
 
 
 
@@ -43,11 +44,17 @@ public void GetMail(){
         inbox.open(Folder.READ_ONLY);
         Message [] msg = inbox.getMessages();
         System.out.println("Мы получили" + msg.length);
-        for (int i = 0; i < msg.length ; i++) {
+        
+        for (int i = 0; i < msg.length; i++) {
          System.out.println("Дата: " + msg[i].getReceivedDate() + "Тема: " +msg[i].getSubject() + "Сообщение: " + getTextFromMessage(msg[i]));   
-            analizator(msg[i].getSubject(),getTextFromMessage(msg[i]));
+         System.out.println("============================= " + i);   
+         analizator(msg[i].getSubject(), getTextFromMessage(msg[i]));
         }
+        
         saveInformation(resultText.toString(), "parameters"); 
+        
+        System.out.println("parameters was saved");
+        
     } catch (NoSuchProviderException ex) {
         Logger.getLogger(MailReader.class.getName()).log(Level.SEVERE, null, ex);
     } catch (MessagingException ex) {
@@ -60,7 +67,7 @@ public void GetMail(){
     
 }
 
-private static String getTextFromMessage(Message message) throws Exception {
+private String getTextFromMessage(Message message) throws Exception {
 String result = "";
 
 if (message.isMimeType("text/plain")) {
@@ -75,7 +82,7 @@ result = message.getContent().toString();
 return result;
 }
 
-private static String getTextFromMimeMultipart(
+private String getTextFromMimeMultipart(
 MimeMultipart mimeMultipart) throws Exception{
 String result = "";
 int count = mimeMultipart.getCount();
@@ -96,92 +103,27 @@ result = result + getTextFromMimeMultipart((MimeMultipart)bodyPart.getContent())
 return result;
 }
 
-public static void analizator (String topic,String text){
+
+static double log(int x, int base)
+{
+    return (double) (Math.log(x) / Math.log(base));
+}
+
+public void analizator (String topic,String text){
     double weightWord=0;
     double weightV = 0;
     
- String [] maswords = {"бизнес", 
-"деньги", 
-"скидка",
-"цена",
-"недорого",
-"выгодно",
-"подробнее", 
-"смотреть",
-"заработать", 
-"внимание",
-"начните",
-"получите",
-"откройте",
-"создайте",
-"заработайте",
-"ищем",
-"акция",
-"Реклама",
-"Доступный",
-"Подарок",
-"Бонус",
-"Скидка",
-"Экономия",
-"Заработок",
-"Рубль",
-"Доход",
-"Дешёвый",
-"Заказ",
-"Кредит",
-"Инвестиции",
-"Свобода",
-"Гарантия",
-"Секрет",
-"Новинка",
-"Ограниченный",
-"Сделка",
-"Прайс",
-"Цена",
-"Счёт",
-"Купите",
-"Срочно",
-"Доступ",
-"Деньги",
-"Выгода",
-"Поздравляем",
-"Конфиденциально",
-"Работа",
-"Присоединяйтесь",
-"Специальный"};  
- String masv [] = {
-"очень выгодно",
-"получайте деньги",
-"Выбирайте предложенные", 
-"узнать больше",
-"способ как заработать",
-"как заработать",
-"в день",
-"стабильные выплаты",
-"уникальный курс",
-"с нами",
-"100% бесплатно",
-"Сто процентов бесплатно",
-"Коммерческое предложение",
-"Увеличение продаж",
-"Эксклюзивное предложение",
-"бизнес на дому",
-"фриланс"
- };
-// text = "Возможности есть, свой бизнес создать хочется, не хватает опыта и идей свежих?"
-//         + "Возможности есть, свой бизнес создать хочется, не можете найти своё?"
-//         + "Деньги есть, свой бизнес создать хочется, не хватает смелости и опыта?"
-//         + "Возможности есть, свой бизнес создать хочется, не можете найти своё?"
-//         + "Свой бизнес открыть хочется, возможности имеются, не хватает опыта "
-//         + "и идей свежих?Возможности есть, свой бизнес на дому создать хочется, не хватает опыта и идей свежих?" ;  
+     
+ String [] maswords = (readInformation("words")).split("\n"); 
+ String masv [] = (readInformation("collacations")).split("\n");
+ 
+ 
+
  text = text.replaceAll("[ ]+", " ");
  String text2 = text.replaceAll("[^а-яА-Я]", " ");
 text2 = text2.replaceAll("[ ]+", " ");
  String [] masString = text2.split(" ");
-//    for (String masString1 : masString) {
-//        System.out.println(masString1); 
-//
-//    }
+
  ///// Считаем кол-во спамовских слов
 int countwd = 0;
     for (int i = 0; i < maswords.length; i++) {
@@ -191,30 +133,52 @@ int countwd = 0;
         }
     }
     
-    weightWord = masString.length!=0?countwd/(double)masString.length:0;
-    weightWord =  Math.abs((1+Math.pow(Math.E, - 3 * weightWord)) - 0.5); 
-    //System.out.println(weightWord);
-    //System.out.println(countwd + " " + masString.length);
+   
+    //countwd = 10;
+    //weightWord = masString.length!=0 ? countwd/(double)masString.length : 0;
+    //System.out.println("weightWord value " + weightWord + " countwd value " + countwd);    
+   // weightWord =  (1 / (1 + Math.pow(Math.E, - weightWord))) - 0.5; 
+    //weightWord = 20;
+    weightWord =  log((int)countwd + 1, 12); 
+    
+    weightWord = weightWord > 1 ?  1 : weightWord;
+    
+    System.out.println(" value " + weightWord);
+    System.out.println(" count " + countwd + " " + " coutn all " + masString.length);
 
+    
+    
+    
 ///// Кол-во словосочетаний
 int countV=0;
     for (int i = 0; i < masv.length; i++) {
         int index = text.indexOf(masv[i]);
+        
         if (index!=-1){
            countV++;
-           while (text.indexOf(masv[i], index+1) !=-1){
+           while (text.indexOf(masv[i], index + 1) !=-1){
                countV++;
-               index = text.indexOf(masv[i],index);
+               index = text.indexOf(masv[i],index + 1);
            }
         }
     }
-    weightV=masString.length!=0?countV/(((double)masString.length)/2):0;
-    weightV = 1/(1+Math.pow(Math.E,-weightV));
+   // weightV=masString.length!=0?countV/(((double)masString.length)/2):0;
+   // weightV = 1/(1+Math.pow(Math.E,-weightV));
+    
+    weightV =  log((int)countV + 1, 12);     
+    weightV = weightV > 1 ?  1 : weightV;
+    
     System.out.println("countwd = " + weightWord);
     System.out.println("countV = " + weightV);
     System.out.println("Link = " + foundlink(text));
     System.out.println("Topic = "+ analizTopic(topic));
-    resultText.append(weightWord + "|" +weightV + "|" +foundlink(text)+ "|" +analizTopic(topic)+ "|"+"0"+"\n");
+    
+    if ((weightWord == 0.0)  && (weightV == 0.0)
+            &&  (foundlink(text) == 0.0) &&  (analizTopic(topic) == 0.0))
+        return;
+    
+    resultText.append(weightWord + "_" +weightV + "_" +foundlink(text)
+            + "_" +analizTopic(topic)+ "_"+"0"+ "_"+ "1" + "\n");
 }
 
 
@@ -223,9 +187,9 @@ int countV=0;
 public void saveInformation(String stp, String filename){
    // String stp = ((Integer)(x + ' ' + y)).toString();
    // filename = "countWordandV.txt";
-    path = path + filename+".txt";
+   // path = path + filename+".txt";
     try {
-        out = new FileWriter(path);
+        out = new FileWriter(path + filename+".txt");
         out.write(stp);
         out.close();
     } catch (IOException ex) {
@@ -236,16 +200,19 @@ public void saveInformation(String stp, String filename){
 //читает информацию с файла с указанным названием 
  public String readInformation(String filename){
     String temp = ""; 
-    String s;
-    path = path + filename+".txt";
+    String s = "";
+    //path = path + filename+".txt";
     try {
-        fr = new FileReader(path);
+        fr = new FileReader(path + filename + ".txt");
          br = new BufferedReader(fr); 
-         temp = br.readLine();
-            while ( (s = br.readLine()) !=null){
-               temp = temp + s + '\n'; 
+         s = br.readLine();
+          
+         while (s !=  null)
+            {
+               temp += s + "\n"; 
+               s = br.readLine();               
             }
-        System.out.println("Прочитали : " + temp); 
+        //System.out.println("Прочитали : " + temp); 
         
     } catch (FileNotFoundException ex) {
         Logger.getLogger(MatrixWeight.class.getName()).log(Level.SEVERE, null, ex);

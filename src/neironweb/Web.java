@@ -10,8 +10,8 @@ double [] inputdata;
 MatrixWeight matrixweight1;
 MatrixWeight matrixweight2;
 Logic log = new Logic();
-    Web(double [] mas, int layer, int [] neironcount, MatrixWeight matrixweight1, MatrixWeight matrixweight2){
-        inputdata = mas;
+    Web( int layer, int [] neironcount, MatrixWeight matrixweight1, MatrixWeight matrixweight2){
+        //inputdata = mas;
         layermas  =new Layer[layer];
         this.matrixweight1 = matrixweight1;
         this.matrixweight2 = matrixweight2;
@@ -29,7 +29,8 @@ Logic log = new Logic();
         }
       
 }
-     public void start () { 
+     public void start (double [] inputdata) { 
+    this.inputdata = inputdata;
    // перенёс создание объекта вверх 
     log.start(layermas,inputdata,matrixweight1,matrixweight2);
  } 
@@ -44,10 +45,13 @@ Logic log = new Logic();
          
        flag = false;
          
-       haveResult =  log.start(layermas, inputdata, matrixweight1, matrixweight2);
+       haveResult =  log.start(layermas, data, matrixweight1, matrixweight2);
          
-       if (Math.abs(waitingResult[0] - haveResult[0]) > 0.05) flag = true;
-       if (Math.abs(waitingResult[1] - haveResult[1]) > 0.05) flag = true;
+       
+       for(int i = 0; i < haveResult.length; i++)
+       {
+             if (Math.abs(waitingResult[i] - haveResult[i]) > 0.05) flag = true;
+       }
 
        
        
