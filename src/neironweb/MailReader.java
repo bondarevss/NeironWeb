@@ -18,8 +18,9 @@ public class MailReader {
 String to = "";
 String from = "";
 String username = "bondarev_bs";
-String password = "..";
-String toEmail  = "smolyakav@mail.ru";
+String password = "warmday1411!";
+//String toEmail  = "smolyakav@mail.ru";
+String toEmail  = "bs_project_88@mail.ru";
 Properties props = new Properties();
  //   Map<String, int> map = new Map<String, int>;
 HashMap<String, Integer> hmap = new HashMap<String, Integer>();
@@ -96,7 +97,7 @@ result = result + getTextFromMimeMultipart((MimeMultipart)bodyPart.getContent())
 return result;
 }
 
-public static void analizator (String topic,String text){
+public void analizator (String topic,String text){
     double weightWord=0;
     double weightV = 0;
     
@@ -168,6 +169,9 @@ public static void analizator (String topic,String text){
 "бизнес на дому",
 "фриланс"
  };
+ // Переведём наши масивы в Файл 
+ saveInformation(massToStringLn(maswords),"maswords");
+ saveInformation(massToStringLn(masv),"masv");
 // text = "Возможности есть, свой бизнес создать хочется, не хватает опыта и идей свежих?"
 //         + "Возможности есть, свой бизнес создать хочется, не можете найти своё?"
 //         + "Деньги есть, свой бизнес создать хочется, не хватает смелости и опыта?"
@@ -223,9 +227,9 @@ int countV=0;
 public void saveInformation(String stp, String filename){
    // String stp = ((Integer)(x + ' ' + y)).toString();
    // filename = "countWordandV.txt";
-    path = path + filename+".txt";
+   // path = path + filename+".txt";
     try {
-        out = new FileWriter(path);
+        out = new FileWriter(path + filename+".txt");
         out.write(stp);
         out.close();
     } catch (IOException ex) {

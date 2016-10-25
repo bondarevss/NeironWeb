@@ -12,18 +12,18 @@ public class NeironWeb {
         
         MailReader mail = new MailReader();
    mail.GetMail();
+
+/* Пока что это мешает
    String s = mail.readInformation("parameters");
    String smas[] = mail.StringToMasKaretka(s);
    
-   //mail.analizator(null);   
+//   //mail.analizator(null);   
         
          double [] data = {0.1,0.7,0.3,0.9};
-//        double [] result = {0.1,0.9};
-//        
+// //       double [] result = {0.1,0.9};
+        
         int [] neironinlayer = {3,2};
-//   
-//   
-//        
+     
    MatrixWeight matrixweight1 = new MatrixWeight(4,neironinlayer[0]);
    MatrixWeight matrixweight2 = new MatrixWeight(neironinlayer[0],neironinlayer[1]);
    
@@ -44,7 +44,10 @@ public class NeironWeb {
          w.education(first, second);   
         }
    
-    //работа сети
+ */ 
+        
+
+//работа сети
     //   w.start(); 
    
    
