@@ -26,9 +26,10 @@ Properties props = new Properties();
 HashMap<String, Integer> hmap = new HashMap<String, Integer>();
 //static String path = "C:\\Users\\BS\\Desktop\\";
 static String path = "D:\\111\\NeironWeb\\resources\\";
-FileWriter out;
-FileReader fr;
-BufferedReader br;
+ FileWriter out;
+ FileReader fr;
+ BufferedReader br;
+ int cnt;
 static StringBuilder resultText = new StringBuilder();
 
 
@@ -170,8 +171,9 @@ public void analizator (String topic,String text){
 "фриланс"
  };
  // Переведём наши масивы в Файл 
- saveInformation(massToStringLn(maswords),"maswords");
+// saveInformation(massToStringLn(maswords),"maswords");
  saveInformation(massToStringLn(masv),"masv");
+ updutefdcile(maswords, "maswords");
 // text = "Возможности есть, свой бизнес создать хочется, не хватает опыта и идей свежих?"
 //         + "Возможности есть, свой бизнес создать хочется, не можете найти своё?"
 //         + "Деньги есть, свой бизнес создать хочется, не хватает смелости и опыта?"
@@ -225,7 +227,6 @@ int countV=0;
 
 //сохраняем в файл с указанным названием 
 public void saveInformation(String stp, String filename){
-   // String stp = ((Integer)(x + ' ' + y)).toString();
    // filename = "countWordandV.txt";
    // path = path + filename+".txt";
     try {
@@ -238,23 +239,23 @@ public void saveInformation(String stp, String filename){
 }
 
 //читает информацию с файла с указанным названием 
- public String readInformation(String filename){
+ public  String readInformation(String filename){
     String temp = ""; 
     String s;
-    path = path + filename+".txt";
+   // path = path + filename+".txt";
     try {
-        fr = new FileReader(path);
+        fr = new FileReader(path + filename+".txt");
          br = new BufferedReader(fr); 
-         temp = br.readLine();
+         temp = br.readLine() + '\n';
             while ( (s = br.readLine()) !=null){
                temp = temp + s + '\n'; 
             }
-        System.out.println("Прочитали : " + temp); 
+      //  System.out.println("Прочитали : " + temp); 
         
     } catch (FileNotFoundException ex) {
-        Logger.getLogger(MatrixWeight.class.getName()).log(Level.SEVERE, null, ex);
+      //  Logger.getLogger(MatrixWeight.class.getName()).log(Level.SEVERE, null, ex);
     } catch (IOException ex) {
-        Logger.getLogger(MailReader.class.getName()).log(Level.SEVERE, null, ex);
+      //  Logger.getLogger(MailReader.class.getName()).log(Level.SEVERE, null, ex);
     }
      return temp;
     }
@@ -283,5 +284,35 @@ public static double analizTopic(String message){
  if (message!=null) 
         return message.length()/100.0;
  else return 0.0;
+}
+
+//Добавление инфы в Файл !!! Внимание копит пустые строки из-за newtext.append(oldinfa +"\n")
+public void updutefdcile (String [] mas,String filename)
+{
+  //if(readInformation(filename).matches("[^а-яА-Я]")==true){
+    String oldinfa = readInformation(filename);
+    if(oldinfa.isEmpty()==false){
+      System.out.println("ЕСТЬ инфа в файле");
+      String [] masoldinfa = StringToMasKaretka(oldinfa);
+      StringBuilder newtext = new StringBuilder();
+      newtext.append(oldinfa +"\n");
+        for (int i = 0; i < mas.length; i++) {
+            int cnt = 0;
+            for (int j = 0; j < masoldinfa.length; j++) {
+               if (mas[i].equals(masoldinfa[j])==true){
+                    System.out.println(mas[i] + " | " + masoldinfa[j] + " Если сделать indexof: " +mas[i].indexOf(masoldinfa[j]) +" Если Equals: = "+mas[i].equals(masoldinfa[j]));
+                   cnt++;
+               }
+            }
+            System.out.println("i = " + i + " cnt = " + cnt);
+           if (cnt == 0)
+              newtext.append(mas[i]+"\n");
+        }
+      saveInformation(newtext.toString(),filename);
+  }
+    else {
+         saveInformation(massToStringLn(mas),filename);
+    }
+ 
 }
 }
