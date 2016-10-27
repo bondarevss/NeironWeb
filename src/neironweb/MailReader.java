@@ -2,6 +2,7 @@
 package neironweb;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
@@ -18,23 +19,19 @@ import javax.mail.internet.MimeMultipart;
 
 public class MailReader {
 
-String to = "";
-String from = "";
-String username = "bondarev_bs";
-String password = "warmday1411!";
-//String toEmail  = "smolyakav@mail.ru";
-String toEmail  = "bs_project_88@mail.ru";
+//String to = ""; why we need it
+//String from = ""; why we need it
+//String password = "warmday1411!";
+//String toEmail  = "bs_project_88@mail.ru";
 Properties props = new Properties();
  //   Map<String, int> map = new Map<String, int>;
-HashMap<String, Integer> hmap = new HashMap<String, Integer>();
-//static String path = "C:\\Users\\BS\\Desktop\\";
- int cnt;
+HashMap<String, Integer> hmap = new HashMap<String, Integer>(); 
 String path = "resources//";
 FileWriter out;
 FileReader fr;
 BufferedReader br;
 StringBuilder resultText = new StringBuilder();
-
+int cnt;
 
 
 
@@ -42,10 +39,11 @@ StringBuilder resultText = new StringBuilder();
 public void GetMail()  {
     
     //saving properties
-//    Properties properties = new Properties();
-//    
+    Properties properties = new Properties();
+  
+    //Create property file whith pas,mail and etc.  
 //    try {
-//        OutputStream outst = new FileOutputStream("propertiesfile");
+//        OutputStream outst = new FileOutputStream(path+"propertiesfile");
 //        properties.setProperty("email", "bs_project_88@mail.ru");
 //        properties.setProperty("password", "warmday1411!");
 //        properties.setProperty("spam", "true");
@@ -55,14 +53,15 @@ public void GetMail()  {
 //         } catch (Exception ex) {
 //        Logger.getLogger(MailReader.class.getName()).log(Level.SEVERE, null, ex);
 //    } 
-         
-         
-        
+
         try {
+            // two lines down get propertyes
+            FileInputStream fileInputStream = new FileInputStream(path+"propertiesfile");
+            properties.load(fileInputStream);
             props.setProperty("mail.store.protocol", "imaps");
             Session session = Session.getInstance(props,null);
             Store store = session.getStore();
-            store.connect("imap.mail.ru", toEmail, password);
+            store.connect("imap.mail.ru", properties.getProperty("email"), properties.getProperty("password"));
             Folder inbox = store.getFolder("SpamForExperiments");
             inbox.open(Folder.READ_ONLY);
             Message [] msg = inbox.getMessages();
