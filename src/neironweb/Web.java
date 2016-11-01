@@ -38,8 +38,10 @@ Logic log = new Logic();
      
      
   public void education (double data[], double waitingResult[]){
-      double [] haveResult;
+     
+       double [] haveResult;
       boolean flag = true;
+      double SPEED = 0.2;
       
      while (flag){
          
@@ -50,33 +52,86 @@ Logic log = new Logic();
        
        for(int i = 0; i < haveResult.length; i++)
        {
-             if (Math.abs(waitingResult[i] - haveResult[i]) > 0.05) flag = true;
+             if (Math.abs(waitingResult[i] - haveResult[i]) > 0.1) flag = true;
        }
 
        
        
          if (flag) {
 
-             for (int i = 0; i < matrixweight2.weight[0].length; i++) {
+             Layer layerTwo = layermas[1];
 
-                 double delta = haveResult[i] * (1 - haveResult[i]) * (waitingResult[i] - haveResult[i]);
+             layerTwo.Error[0] = haveResult[0] * (1 - haveResult[0]) * (waitingResult[0] - haveResult[0]);
+             layerTwo.Error[1] = haveResult[1] * (1 - haveResult[1]) * (waitingResult[1] - haveResult[1]);
 
-                 for (int j = 0; j < matrixweight2.weight.length; j++) {
+             Layer layerOne = layermas[0];
 
-                     matrixweight2.weight[j][i] = matrixweight2.weight[j][i] + 1 * delta * haveResult[i];
-                 }
+             double sum = 0;
+             for (int i = 0; i < 2; i++) {
+                 sum += matrixweight2.weight[0][i] * layerTwo.Error[i];
+             }
+             layerOne.Error[0] = sum * layerOne.layeroutput[0] * (1 - layerOne.layeroutput[0]);
+
+             for (int i = 0; i < 2; i++) {
+                 sum += matrixweight2.weight[1][i] * layerTwo.Error[i];
+             }
+             layerOne.Error[1] = sum * layerOne.layeroutput[1] * (1 - layerOne.layeroutput[1]);
+
+             for (int i = 0; i < 2; i++) {
+                 sum += matrixweight2.weight[2][i] * layerTwo.Error[i];
+             }
+             layerOne.Error[2] = sum * layerOne.layeroutput[2] * (1 - layerOne.layeroutput[2]);
+
+             //for second layer change weigth 
+             double[] deltaWeighti0 = new double[3];
+             for (int i = 0; i < 3; i++) {
+                 deltaWeighti0[i] = layerOne.layeroutput[i] * layerTwo.Error[0] * SPEED;
              }
 
-             Layer layerFirst = layermas[0];
-
-             for (int i = 0; i < matrixweight1.weight[i].length; i++) {
-                 double delta = layerFirst.layeroutput[i] * (1 - layerFirst.layeroutput[i]);
-
-                 for (int j = 0; j < matrixweight1.weight.length; j++) {
-                     matrixweight1.weight[j][i] = matrixweight1.weight[j][i] + 1 * delta * data[j];
-                 }
-
+             for (int i = 0; i < 3; i++) {
+                 matrixweight2.weight[i][0] += deltaWeighti0[i];
              }
+
+             double[] deltaWeighti1 = new double[3];
+             for (int i = 0; i < 3; i++) {
+                 deltaWeighti1[i] = layerOne.layeroutput[i] * layerTwo.Error[1] * SPEED;
+             }
+
+             for (int i = 0; i < 3; i++) {
+                 matrixweight2.weight[i][1] += deltaWeighti1[i];
+             }
+
+              //for first layer change weigth                
+             // for first neiron 
+             double[] L1_deltaWeighti0 = new double[4];
+             for (int i = 0; i < 4; i++) {
+                 L1_deltaWeighti0[i] = data[i] * layerOne.Error[0] * SPEED;
+             }
+
+             for (int i = 0; i < 4; i++) {
+                 matrixweight1.weight[i][0] += L1_deltaWeighti0[i];
+             }
+
+             // for second neiron 
+             double[] L1_deltaWeighti1 = new double[4];
+             for (int i = 0; i < 4; i++) {
+                 L1_deltaWeighti1[i] = data[i] * layerOne.Error[1] * SPEED;
+             }
+
+             for (int i = 0; i < 4; i++) {
+                 matrixweight1.weight[i][1] += L1_deltaWeighti1[i];
+             }
+
+             // for third neiron 
+             double[] L1_deltaWeighti2 = new double[4];
+             for (int i = 0; i < 4; i++) {
+                 L1_deltaWeighti2[i] = data[i] * layerOne.Error[2] * SPEED;
+             }
+
+             for (int i = 0; i < 4; i++) {
+                 matrixweight1.weight[i][1] += L1_deltaWeighti2[i];
+             }
+
              flag = true;   //флаг, что нужно еще раз запустить сеть
 
          }
@@ -87,6 +142,7 @@ Logic log = new Logic();
      }
      
      System.out.println("OK. I'm educated now");
+      
      
   } 
   

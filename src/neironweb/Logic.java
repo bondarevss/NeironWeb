@@ -46,8 +46,12 @@ String s;
            
            inputdata = templ;
        }
-    //for(double a:inputdata)
-      //  System.out.println(a);
+       System.out.println("==========");
+       System.out.println("вероятность, что обычное письмо: " + inputdata[0]);
+       System.out.println("вероятность, спам: " + inputdata[1]);
+       
+//       for(double a:inputdata)
+//        System.out.println(a);
     return inputdata;
    }
    
