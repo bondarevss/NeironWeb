@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.*;
+import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static neironweb.MatrixWeight.path;
@@ -18,7 +19,7 @@ import javax.mail.internet.MimeMultipart;
 
 
 public class MailReader {
-
+    
 //String to = ""; why we need it
 //String from = ""; why we need it
 //String password = "warmday1411!";
@@ -36,7 +37,10 @@ int cnt;
 
 
 
-public void GetMail()  {
+public void GetMail() {
+ 
+            
+    
     
     //saving properties
     Properties properties = new Properties();
@@ -62,7 +66,7 @@ public void GetMail()  {
             Session session = Session.getInstance(props,null);
             Store store = session.getStore();
             store.connect("imap.mail.ru", properties.getProperty("email"), properties.getProperty("password"));
-            Folder inbox = store.getFolder("SpamForExperiments");
+            Folder inbox = store.getFolder("INBOX");
             inbox.open(Folder.READ_ONLY);
             Message [] msg = inbox.getMessages();
             System.out.println("Мы получили" + msg.length);
@@ -70,8 +74,8 @@ public void GetMail()  {
             for (int i = 0; i < msg.length; i++) {
                 System.out.println("Дата: " + msg[i].getReceivedDate() + "Тема: " +msg[i].getSubject() + "Сообщение: " + getTextFromMessage(msg[i]));
                 
-                //true if spam
-                analizator(msg[i].getSubject(), getTextFromMessage(msg[i]), true);
+                //true if spam                
+                analizator(msg[i].getSubject(), getTextFromMessage(msg[i]), Boolean.valueOf(properties.getProperty("spam")));
             }
             
             saveInformation(resultText.toString(), "parameters");
@@ -104,19 +108,23 @@ private String getTextFromMimeMultipart(
 MimeMultipart mimeMultipart) throws Exception{
 String result = "";
 int count = mimeMultipart.getCount();
+ 
 for (int i = 0; i < count; i++) {
+   
+    
 BodyPart bodyPart = mimeMultipart.getBodyPart(i);
-if (bodyPart.isMimeType("text/plain")) {
-result = result + "\n" + bodyPart.getContent();
-break; // without break same text appears twice in my tests
-} 
-else if (bodyPart.isMimeType("text/html")) {
-String html = (String) bodyPart.getContent();
-result = result + "\n" + html; //org.jsoup.Jsoup.parse(html).text();
-} 
-else if (bodyPart.getContent() instanceof MimeMultipart){
-result = result + getTextFromMimeMultipart((MimeMultipart)bodyPart.getContent());
-}
+ result += (String) bodyPart.getContent();
+//if (bodyPart.isMimeType("text/plain")) {
+//result = result + "\n" + bodyPart.getContent();
+//break; // without break same text appears twice in my tests
+//} 
+//else if (bodyPart.isMimeType("text/html")) {
+//String html = (String) bodyPart.getContent();
+//result = result + "\n" + html; //org.jsoup.Jsoup.parse(html).text();
+//} 
+//else if (bodyPart.getContent() instanceof MimeMultipart){
+//result = result + getTextFromMimeMultipart((MimeMultipart)bodyPart.getContent());
+//}
 }
 return result;
 }
