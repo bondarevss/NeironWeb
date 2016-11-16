@@ -12,13 +12,13 @@ public class NeironWeb {
     ArrayList<ArrayList<Neiron>> web = new ArrayList<ArrayList<Neiron>>();
 
       
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
    
        
         
    //reading mail     
    MailReader mail = new MailReader();
-   mail.GetMail();
+  // mail.GetMail();
 
   // Пока что это мешает
 
@@ -70,9 +70,9 @@ public class NeironWeb {
          double [] result = Arrays.copyOfRange(paramsFinal, 4, 6);
          
          
-           w.start(params4);
+       //    w.start(params4);
          
-      //  w.education(params4, result);   
+        w.education(params4, result);   
        }
 //   
 //

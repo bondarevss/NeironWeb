@@ -2,6 +2,13 @@
 package neironweb;
 
 import java.util.Arrays;
+import javax.swing.JFrame;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 
 
 public class Web {
@@ -9,12 +16,30 @@ Layer [] layermas;
 double [] inputdata;
 MatrixWeight matrixweight1;
 MatrixWeight matrixweight2;
+ XYSeries xyser;
+ XYDataset xy;
+ JFreeChart jf ;
+ JFrame jframe;
+ ChartPanel chp;
+int cntiter = 0;
 Logic log = new Logic();
     Web( int layer, int [] neironcount, MatrixWeight matrixweight1, MatrixWeight matrixweight2){
         //inputdata = mas;
         layermas  =new Layer[layer];
         this.matrixweight1 = matrixweight1;
         this.matrixweight2 = matrixweight2;
+        
+        
+    xyser = new XYSeries("adsf");
+    xy = new XYSeriesCollection(xyser);
+    jf = ChartFactory.createXYLineChart("grafic", "X", "Y", xy);
+        jframe = new JFrame();
+        jframe.setVisible(true);
+        jframe.setSize(500, 500);
+        jframe.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        chp = new ChartPanel(jf);
+       
+        jframe.setContentPane(chp);
         
         for (int i = 0; i < layer; i++) {
             Neiron [] temp = new Neiron[neironcount[i]];
@@ -37,14 +62,14 @@ Logic log = new Logic();
      
      
      
-  public void education (double data[], double waitingResult[]){
+  public void education (double data[], double waitingResult[]) throws InterruptedException{
      
        double [] haveResult;
       boolean flag = true;
       double SPEED = 0.2;
       
      while (flag){
-         
+       cntiter++;  
        flag = false;
          
        haveResult =  log.start(layermas, data, matrixweight1, matrixweight2);
@@ -56,6 +81,10 @@ Logic log = new Logic();
        }
 
        
+            xyser.add(cntiter, haveResult[0]);
+            Thread.sleep(500);
+                    
+    
        
          if (flag) {
 
