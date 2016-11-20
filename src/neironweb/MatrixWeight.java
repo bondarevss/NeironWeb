@@ -73,9 +73,31 @@ static String path = "C:\\Users\\BS\\Desktop\\MatrixWeight.txt";
     }
     }
     
-    public void readMatrix(MailReader mail, String name){
-       String s = mail.readInformation(name);
-       String paramArray[] = mail.StringToMasKaretka(s);
+    public void readMatrix(String fileName){
+        
+        String temp = "";
+        String s = "";
+        //path = path + filename+".txt";
+        try {
+            fr = new FileReader(path + fileName + ".txt");
+            br = new BufferedReader(fr);
+            s = br.readLine();
+
+            while (s != null) {
+                temp += s + "\n";
+                s = br.readLine();
+            }
+        //System.out.println("Прочитали : " + temp); 
+
+        } catch (FileNotFoundException ex) {
+            //  Logger.getLogger(MatrixWeight.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            //  Logger.getLogger(MailReader.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
+       s = temp;
+       String paramArray[] = s.split("\n");
         for (int i = 0; i < paramArray.length; i++) {
          String [] paramString = paramArray[i].split("_");   
             for (int j = 0; j < paramString.length; j++) {
