@@ -12,37 +12,45 @@ public class NeironWeb {
 
     public static void main(String[] args) throws InterruptedException {
 
-        //reading mail     
-        MailReader mail = new MailReader();
-        //mail.GetMail();
-
-        //reading parameters
-        String s = mail.readInformation("parameters");
-        String paramArray[] = mail.StringToMasKaretka(s);
-
-        int[] neironinlayer = {4, 3, 2};
-        Web w = new Web(neironinlayer);
-
-        //educating process
-        for (int i = 0; i < paramArray.length; i++) {
-
-            String[] paramString = paramArray[i].split("_");
-            double[] paramsFinal = new double[paramString.length];
-
-            for (int v = 0; v < paramString.length; v++) {
-                System.out.println("paramString = " + paramString[v]);
-            }
-
-            for (int j = 0; j < paramString.length; j++) {
-                paramsFinal[j] = Double.parseDouble(paramString[j]);
-            }
-
-            double[] params4 = Arrays.copyOfRange(paramsFinal, 0, 4);
-            double[] result = Arrays.copyOfRange(paramsFinal, 4, 6);
-
-       //    w.start(params4);
-            w.education(params4, result);
-        }
+        Frame myFrame = new Frame();
+        
+        
+//        //reading mail     
+//        MailReader mail = new MailReader();
+//        //mail.GetMail();
+//
+//        //reading parameters
+//        String s = mail.readInformation("parameters");
+//        String paramArray[] = mail.StringToMasKaretka(s);
+//
+//        int[] neironinlayer = {4, 3, 2};
+//        Web w = new Web(neironinlayer);
+//
+//        //educating process
+//        for (int i = 0; i < paramArray.length; i++) {
+//
+//            String[] paramString = paramArray[i].split("_");
+//            double[] paramsFinal = new double[paramString.length];
+//
+//            for (int v = 0; v < paramString.length; v++) {
+//                System.out.println("paramString = " + paramString[v]);
+//            }
+//
+//            for (int j = 0; j < paramString.length; j++) {
+//                paramsFinal[j] = Double.parseDouble(paramString[j]);
+//            }
+//
+//            double[] params4 = Arrays.copyOfRange(paramsFinal, 0, 4);
+//            double[] result = Arrays.copyOfRange(paramsFinal, 4, 6);
+//
+//       //    w.start(params4);
+//            w.education(params4, result);
+//        }
+        
+        
+        
+        
+        
 //   
 //
         //    mail.saveInformation(matrixweight1.mastostring(), "matrixweight1"); 
